@@ -2,16 +2,12 @@ const webpack = require('webpack');
 
 module.exports = [
   {
-    name: 'client side output to ./library',
+    name: 'fluctus react version',
     devtool: 'source-map', // or use source-map-eval
-    entry: `${__dirname}/library/client/mainClient.js`,
+    entry: `${__dirname}/client/index.jsx`,
     output: {
-      path: `${__dirname}/client/lib/echoLoJS`,
-      filename: 'echoLoJS-library.js',
-      // library: 'echoLoJS-library',
-      // libraryTarget: 'umd', // This is exporting as a universal module
-      // umdNamedDefine: true,
-      // explore externals for things we may not want to include in our bundle
+      path: `${__dirname}/client/`,
+      filename: 'bundle.js',
     },
     watch: true,
     module: {
@@ -21,12 +17,14 @@ module.exports = [
           exclude: /node_modules/,
           loader: 'babel',
         },
-        //{},
       ],
     },
     plugins: [
-      new webpack.BannerPlugin('Copyright MA\'AM inc.'),
-      // new webpack.HotModuleReplacementPlugin(),
+      new webpack.BannerPlugin('Copyright Imperiojs'),
+      new webpack.optimize.OccurenceOrderPlugin(),
+      new webpack.optimize.UglifyJsPlugin({
+        compress: { warnings: false },
+      }),
     ],
   // IF WE WANT TO USE THE WEBPACK SERVER - NOT USING FOR NOW SINCE WE HAVE OUR OWN SERVER.
     // devServer: {

@@ -2,10 +2,10 @@ var xAccelBox = document.getElementById('x-accel');
 var yAccelBox = document.getElementById('y-accel');
 var zAccelBox = document.getElementById('z-accel');
 
-imperio.mobileRoomSetup(imperio.socket, imperio.room);
+imperio.emitRoomSetup();
 
 // handle accel data using our library
-imperio.mobileAccelShare(imperio.socket, imperio.room, printAccelerationData);
+imperio.emitAcceleration.gravity(printAccelerationData);
 
 function printAccelerationData(accObj) {
   xAccelBox.innerHTML = `${accObj.x}`;

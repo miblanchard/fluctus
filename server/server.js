@@ -3,36 +3,34 @@ const express = require('express');
 const app = express();
 const server = require('http').Server(app); // eslint-disable-line
 const path = require('path');
+// const imperio = require('./../../imperio/index.js')(server);
 const imperio = require('imperio')(server);
 const port = process.env.PORT || 3000;
 
 app.use(express.static(path.join(`${__dirname}/../client`)));
+// app.use(express.static(path.join(`${__dirname}/../../imperio`)));
 app.use(express.static(path.join(`${__dirname}/../node_modules/imperio`)));
 app.set('view engine', 'ejs');
-app.use(imperio.init());
 
 /* ------------------
  * --    Routes    --
  * ------------------ */
 
 // App will serve up different pages for client & desktop
-app.get('/',
+app.get('/', imperio.init(),
   (req, res) => {
-    if (req.useragent && req.useragent.isDesktop) {
+    if (req.imperio.isDesktop) {
       res.sendFile(path.join(`${__dirname}/../client/browser.html`));
       // res.render(`../client/browser.html`);
-    } else if (req.useragent && req.useragent.isMobile) {
-      // TODO if token is on request, sent to tap in appropriate room
+    } else if (req.imperio.isMobile) {
       res.render(`${__dirname}/../client/rootmobile`, { error: null });
       // res.sendFile(path.join(`${__dirname}/../client/mobile.html`));
     }
   }
 );
-app.post('/',
+app.post('/', imperio.init(),
   (req, res) => {
-    if (req.useragent && req.useragent.isMobile) {
-      // TODO Validate nonce match, if it doesn't, serve rootmobile
-      console.log(req.imperio);
+    if (req.imperio.isMobile) {
       if (req.imperio.connected) {
         res.render(`${__dirname}/../client/tapmobile`, { error: null });
       } else {

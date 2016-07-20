@@ -2,7 +2,7 @@
 document.getElementById('nonceContainer').innerHTML = `Mobile code: <span>${imperio.nonce}</span>`;
 
 // Use roomId from cookies to create a room
-imperio.desktopRoomSetup(imperio.socket, imperio.room);
+imperio.listenerRoomSetup();
 
 // Grab canvas element and create starting data and line styles
 const canvas = document.getElementById('accel-chart');
@@ -53,17 +53,17 @@ let zDataArray = [0, 1, 2, 3, 4];
 function calculateRunningAverage(accelerationDataObject) {
   xDataArray.shift();
   xDataArray.push(accelerationDataObject.x);
-  xAvg = xDataArray.reduce((a, b) => {return a + b; }) / 5;
+  xAvg = xDataArray.reduce((a, b) => { return a + b; }) / 5;
   yDataArray.shift();
   yDataArray.push(accelerationDataObject.y);
-  yAvg = yDataArray.reduce((a, b) => {return a + b; }) / 5;
+  yAvg = yDataArray.reduce((a, b) => { return a + b; }) / 5;
   zDataArray.shift();
   zDataArray.push(accelerationDataObject.z);
-  zAvg = zDataArray.reduce((a, b) => {return a + b; }) / 5;
+  zAvg = zDataArray.reduce((a, b) => { return a + b; }) / 5;
 }
 
 // Instantiate acceleration handler
-imperio.desktopAccelHandler(imperio.socket, calculateRunningAverage);
+imperio.accelerationListener(calculateRunningAverage);
 
 // Removes and adds one data point to each dataset in the chart
 function addData() {
